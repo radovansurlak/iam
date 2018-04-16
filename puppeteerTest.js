@@ -15,7 +15,8 @@ const axios = require('axios');
 		captions: [],
 	};
 	let tags = [];
-	let sortedTags = [];
+	let sortedScrapedTags = [];
+	let sortedAnalysedTags = [];
 	let requestData = {
 		"requests": [
 			{
@@ -67,18 +68,51 @@ const axios = require('axios');
 		imageData.captions = [...imageData.captions, ...result.data.responses[0].captions.map(caption => caption.text.toLowerCase())];
 
 		await page.evaluate(() => document.querySelector('.pview_stage_contextBeltImage-active').parentElement.nextSibling.click()); // Navigate to the next image
-		// await page.waitFor(200);
+		await page.waitFor(2000);
 	}
 	// imageData.aestheticScore = result.data.responses[0].aesthetic_score.score;
 	// Count tags
+
+	imageData.tags.map(tag => {
+		if (scrapedCount.hasOwnProperty(tag)) {
+			scrapedCount[tag]++;
+		} else {
+		  Object.defineProperty(scrapedCount, tag, {value: 1, writable: true, enumerable: true});
+		}
+	});
+
+	imageData.analysedTags.map(tag => {
+		if (analysedCount.hasOwnProperty(tag)) {
+			analysedCount[tag]++;
+		} else {
+		  Object.defineProperty(analysedCount, tag, {value: 1, writable: true, enumerable: true});
+		}
+	});
+
+	for (let tag in scrapedCount) {
+    	sortedScrapedTags.push([tag, scrapedCount[tag]]);
+	};
+	for (let tag in analysedCount) {
+    	sortedAnalysedTags.push([tag, analysedCount[tag]]);
+	};
 	
+	sortedScrapedTags.sort((a,b) => b[1] - a[1]);
+	sortedAnalysedTags.sort((a,b) => b[1] - a[1]);
+
+	let output = {
+		organicTags: sortedScrapedTags,
+		analysedTags: sortedAnalysedTags,
+	}
+
 	debugger;
-	fs.writeFileSync('tags.json', JSON.stringify(imageData), 'ascii', (err) => {
+
+	fs.writeFileSync('tags.json', JSON.stringify(output), 'ascii', (err) => {
 		if (err) {
 			console.error(err);
 			return;
 		};
 		console.log("File has been created");
 	});
+
 	await browser.close();
 })();
