@@ -1,0 +1,17 @@
+{
+  "name": "eyeem",
+  "version": "1.0.0",
+  "description": "",
+  "main": "EyeEm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "brain.js": "^1.1.2",
+    "nodemon": "^1.17.3",
+    "puppeteer": "^1.2.0"
+  }
+}

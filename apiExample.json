@@ -1,0 +1,20 @@
+{
+    "requests": [
+        {
+            "tasks": [
+                {
+                    "type": "CAPTIONS"
+                },
+                {
+                    "type": "AESTHETIC_SCORE"
+                },
+                {
+                    "type": "TAGS"
+                }
+            ],
+            "image": {
+                "url": "https://cdn4.eyeem.com/thumb/791d0ddd1db41ad92910236b086fe16653c25327-1490950936712/900/900"
+            }
+        }
+    ]
+}
